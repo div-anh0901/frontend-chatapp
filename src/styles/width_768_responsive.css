@@ -1,0 +1,56 @@
+
+
+@media only screen and (min-width: 768px) {
+    .w-conversation_400 {
+        display: block !important;
+        width:  calc(100% - 300px);
+        transition: width 0.5s ease, opacity 0.5s ease;
+    }
+    .w-conversation_500 {
+        display: block !important;
+        width:  calc(100% - 400px);
+        transition: width 0.5s ease, opacity 0.5s ease;   
+    }
+
+    #listConversations{
+        display: block !important;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .w-conversation_400 {
+
+        width: 100%;
+        display: none;
+        transition: width 0.5s ease, opacity 0.5s ease;
+        
+    }
+    .w-conversation_500 {
+        width: 100%;
+        display: none;
+        transition: width 0.5s ease, opacity 0.5s ease;
+        
+    }
+
+    .listConversations{
+        width: calc(100%-100px);
+    }
+
+    .NavBarMain{
+        position: absolute;
+        left: 0;
+    }
+
+    .NavBarMain{
+        width: 70px !important;
+    }
+
+    
+    .NavBarMain{
+        width: 70px !important;
+    }
+
+   .NavBarMain  .header_icon::before{
+        width: 70px !important;
+   }
+}

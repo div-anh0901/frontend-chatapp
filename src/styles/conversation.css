@@ -1,0 +1,95 @@
+.navbar_hover {}
+.navbar_top {
+
+}
+
+.navbar_top_li{
+
+}
+.button-effect{
+    display: inline-flex;
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+}
+.header_icon::before{
+    position: absolute;
+    z-index: 3;
+    content: "";
+    height: 60px;
+    width: 100px;
+    border-left: 4px solid white;
+    transform: translateX(-100px);
+    background-color:rgb(255, 255, 255,0.2);
+    padding: 20px 0;
+}
+.header_icon:hover::before{
+    border-left: 4px solid white;
+    transform: translateX(0px);
+    transition: transform .4s ease-in-out;
+}
+.header_icon:active::before{
+    border-left: 4px solid white;
+    transform: translateX(0px);
+    transition: transform .4s ease-in-out;
+}
+
+
+.conversation-item:hover {
+    background-color: #e3f7f3;
+}
+
+.conversation-item:hover .lastMessage{
+    font-weight: 600;
+    color: #01aa85;
+}
+
+.conversations{
+    overflow-y: auto;
+    height: calc(100vh - 350px);
+}
+
+
+.body_chat{
+    background-image: url("../images/bg-messages.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-blend-mode: overlay;
+    background-color: #01aa851a;
+    position: relative;
+    z-index: 1;
+}
+
+
+.NavBarMain.hide {
+    overflow: hidden;
+    width: 0;
+  opacity: 0;
+  transition: width 0.5s ease, opacity 0.5s ease;
+}
+
+.NavBarMain.show {
+
+width: 100px; /* adjust as needed */
+  opacity: 1;
+  transition: width 0.5s ease, opacity 0.5s ease;
+}
+
+
+.radius-left-bottom{
+    border-radius: 10px 10px 10px 0px;
+}
+
+.radius-right-bottom{
+    border-radius: 10px 10px 0px 10px;
+}
+
+.word-wrap{
+    word-wrap: break-word;
+}
+
+
+.chat_container{
+    height: calc(100vh - 200px);
+    overflow-x: auto;
+}

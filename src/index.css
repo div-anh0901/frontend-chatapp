@@ -1,0 +1,88 @@
+@import "tailwindcss";
+@import "./styles/width_640_responsive.css";
+
+*{
+    font-family: "Manrope", serif;
+}
+
+
+.d-flex-center{
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    
+}
+
+.d-flex-center-space-between{
+    align-items: center;
+    display: flex;
+    justify-content:space-between;
+}
+.d-flex-center-space-around{
+    align-items: center;
+    display: flex;
+    justify-content:space-around;
+}
+
+
+.flex-end{
+    align-items: flex-end;
+}
+
+.body{
+    width: 100%;
+    background-color: #e3f7f3;
+    min-height: 100vh;
+}
+   
+.btn-green-light {
+    background-color: #01aa8526;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #01aa85;
+    transition: all .4s ease-in-out;
+}
+
+.btn-green-light:hover{
+    background-color: #01aa85;
+    color: wheat;
+    transition: all .4s ease-in-out;
+}
+
+.w-conversation_500 {
+   width:  calc(100% - 500px);
+   transition: width 0.5s ease, opacity 0.5s ease;
+}
+
+.w-conversation_400 {
+    width:  calc(100% - 400px);
+    transition: width 0.5s ease, opacity 0.5s ease;
+    
+}
+
+.all-transition{
+    transition: width 0.5s ease, opacity 0.5s ease;
+}
+
+.bg-green_1 {
+    background-color: #01aa85;
+}
+
+.text-elllispis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.slide-scroll{
+    overflow-x:scroll;
+}
+
+.flex-row-reverse{
+    display: flex;
+  flex-direction: row-reverse;
+}
+
+
+

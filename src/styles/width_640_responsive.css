@@ -1,0 +1,19 @@
+@media only screen and (max-width: 640px) {
+    .listConversations{
+        width: 100%;
+    }
+
+    .NavBarMain{
+        position: absolute;
+        left: 0;
+    }
+
+    .NavBarMain{
+        width: 70px !important;
+    }
+
+   .NavBarMain  .header_icon::before{
+        width: 70px !important;
+   }
+
+}

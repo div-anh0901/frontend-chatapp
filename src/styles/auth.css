@@ -1,0 +1,19 @@
+.body-auth{
+    width: 100%;
+    background-color: #e3f7f3;
+    min-height: 100vh;
+}
+
+
+.boder_input_v1{
+    border: 1px solid #0000001a;
+    border-radius: 5px;
+    padding: 13px 20px;
+}
+
+.btn-primary {
+    background-color: #01aa85;
+    border-color: #01aa85 !important;
+    color: #fff !important;
+    transition: all .3s ease;
+}
