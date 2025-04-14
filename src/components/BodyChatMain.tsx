@@ -15,6 +15,8 @@ import { FaMicrophone } from "react-icons/fa";
 import { FaChevronLeft } from "react-icons/fa6";
 import { IoSend } from "react-icons/io5";
 import ChatContainer from "./ChatContainer";
+import { useContext, useEffect, useState } from "react";
+import { ConversationContext } from "../utils/context/ConversationContext";
 type Props={
     isOpen: boolean,
     boxRef: React.RefObject<HTMLDivElement>,
@@ -23,6 +25,20 @@ type Props={
 
 
 function BodyChatMain({isOpen,boxRef,clickToggleNav_v1}:Props) {
+
+    const [conDefaut, setConDefaut] = useState({
+        "createdAt": "2025-04-13T19:53:59.640Z",
+        "creator": {id: 4, email: 'today2@gmail.com', username: 'today2 123123123'},
+        "id": 9,
+        "recipient": {id: 1, email: 'john@gmail.com', username: 'john Morgan 1231312'}
+    })
+    const { conversation ,updateConversations} = useContext(ConversationContext);
+    
+    useEffect(()=>{
+        if(conversation == undefined){
+            updateConversations(conDefaut)
+        }
+    },[])
   return (
     <div ref={boxRef} id="chatMain" className={isOpen ? "w-conversation_500 body_chat h-[100vh] relative z-1 all-transition": "w-conversation_400 body_chat h-[100vh] relative z-1 all-transition"}>
         <div className="w-[100%]">
@@ -38,7 +54,7 @@ function BodyChatMain({isOpen,boxRef,clickToggleNav_v1}:Props) {
                         </div>
                         
                         <div className="pl-[20px] sm:hidden lg:block">
-                            <h4 className="font-semibold text-[18px]">Josephin water</h4>
+                            <h4 className="font-semibold text-[18px]">{conversation?.recipient.username}</h4>
                             <p className="text-[15px] text-[#7f8384]">online</p>
                         </div>
                     </div>

@@ -1,11 +1,14 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import avatar from '../images/download.png';
 import { RiSearchLine } from "react-icons/ri";
 import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
-import { listUser, listConversation } from "../data";
 import moment from "moment";
 import { AuthContext } from '../utils/context/AuthContext';
 import { FaChevronRight } from "react-icons/fa6";
+import { Conversations, ListConversations } from '../utils/types';
+import { getConversations } from '../utils/api';
+import { toast } from 'react-toastify';
+import { ConversationContext } from '../utils/context/ConversationContext';
 type Props ={
     clickToggleNavMain : ()=>void,
     boxRef: React.RefObject<HTMLDivElement>,
@@ -14,7 +17,32 @@ type Props ={
 
 
 function NavbarListConversation({clickToggleNavMain,boxRef,clickToggleNav_v2}:Props) {
+    const [arrayConversation, setArrayConversation] = useState<ListConversations[]>([]);
+    const { conversation, updateConversations } = useContext(ConversationContext);
     const {user} = useContext(AuthContext);
+
+
+   useEffect(()=>{
+        if(user !== undefined){
+            getConversations(user.id)
+            .then(({data})=>{
+                setArrayConversation(data);
+            })
+            .catch((err) => console.log(err));
+        }else {
+            toast.error(
+                "Doesn't infomation user", 
+                {
+                    position: "top-center"
+                });      
+        }
+    },[]);
+
+
+    function handClickCon (data: Conversations){
+        updateConversations(data)
+    }
+
     return (
         <div ref={boxRef} id='listConversations' className="all-transition lg:w-[400px] md:w-[300px] sm:w-[100%] all-transition h-[100vh] bg-[white] listConversations">
             <div className="w-[100%] h-[100px]  border-b-1 border-b-[#7f838433]">
@@ -44,13 +72,13 @@ function NavbarListConversation({clickToggleNavMain,boxRef,clickToggleNav_v2}:Pr
                 </div>
                 <ul className="w-[100%] d-flex-center-space-between slide-scroll pl-[20px] pt-[20px]">
                     {
-                        listUser.map((data,index)=>(
+                        arrayConversation.map((data,index)=>(
                             <li key={index} className="mr-[10px]"> 
                                 <div className="h-[70px] w-[70px]  d-flex-center rounded-[50%] border-2 border-[#01aa85]">
-                                    <img src={data.avatar} className="h-[60px] w-[60x] rounded-[50%]" alt="" />
+                                    <img src={avatar} className="h-[60px] w-[60x] rounded-[50%]" alt="" />
                                 </div>
                                 <div className="text-center text-[12px] pt-[10px] w-[50px] ">
-                                    <p className="text-elllispis">{data.username}</p>
+                                    <p className="text-elllispis">{data.recipient.username}</p>
                                 </div>
                             </li>
                         ))
@@ -69,17 +97,17 @@ function NavbarListConversation({clickToggleNavMain,boxRef,clickToggleNav_v2}:Pr
                 <div className="w-[100%]">
                     <ul className="w-[100%] conversations">
                         {
-                            listConversation.map((data,index)=>(
-                                <li key={index} className="w-[100%] h-[100px] border-b-1 border-b-[#7f838433] conversation-item  d-flex-center-space-between pl-[20px] pr-[20px]">
+                            arrayConversation.map((data,index)=>(
+                                <li key={index} onClick={()=>handClickCon(data)} className="w-[100%] h-[100px] border-b-1 border-b-[#7f838433] conversation-item  d-flex-center-space-between pl-[20px] pr-[20px]" >
                                     <div className="d-flex-center">
-                                        <img className="h-[50px] w-[50x] rounded-[50%]" src={data.avatar} alt="" />
+                                        <img className="h-[50px] w-[50x] rounded-[50%]" src={avatar} alt="" />
                                         <div className="ml-[10px]">
-                                            <h4 className="font-semibold text-[15px] ">{data.username}</h4>
-                                            <p className="text-[#7f8384] text-[15px] lastMessage">{data.lastMessaged}</p>
+                                            <h4 className="font-semibold text-[15px] ">{data.recipient.username}</h4>
+                                            <p className="text-[#7f8384] text-[15px] lastMessage">last message</p>
                                         </div>
                                     </div>
                                     <div className="text-[15px] text-[#7f8384]">
-                                        <p>{moment(data.date).startOf("hour").fromNow() }</p>
+                                        <p>{moment(new Date(data.createdAt)).startOf("hour").fromNow() }</p>
                                     </div>
                                 </li>
                             ))
