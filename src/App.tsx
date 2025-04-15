@@ -7,23 +7,27 @@ import { AuthticationRoute } from './components/AuthticationRoute';
 import { AuthContext } from './utils/context/AuthContext';
 import { useState } from 'react';
 import { User } from './utils/types';
+import { socket, SocketContext } from './utils/context/SocketContext';
 
 function App() {
   const [user, setUser] = useState<User>();
   return (
     <>
-    <AuthContext.Provider value={{user, updateUser: setUser}}>
-      <Routes>
-        <Route path='/' element={
-            <AuthticationRoute>
-              <ConversationPage/>
-            </AuthticationRoute>
-          } />
-        <Route path='/login' element={<LoginPage/>} />
-        <Route path='/register' element={<RegisterPage />} />
-      </Routes>
-    </AuthContext.Provider>
-    <ToastContainer/>
+    <SocketContext.Provider value={socket}>
+      <AuthContext.Provider value={{user, updateUser: setUser}}>
+        <Routes>
+          <Route path='/' element={
+              <AuthticationRoute>
+                <ConversationPage/>
+              </AuthticationRoute>
+            } />
+          <Route path='/login' element={<LoginPage/>} />
+          <Route path='/register' element={<RegisterPage />} />
+        </Routes>
+      </AuthContext.Provider>
+      <ToastContainer/>
+    </SocketContext.Provider>
+  
     </>
    
   )
