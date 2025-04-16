@@ -1,25 +1,34 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import user1 from '../images/conversation2.jpeg';
 import { Message } from '../utils/types';
 import { ConversationContext } from '../utils/context/ConversationContext';
 import { getMessagefollowCon } from '../utils/api';
 import { AuthContext } from '../utils/context/AuthContext';
+import { SocketContext } from '../utils/context/SocketContext';
 function ChatContainer() {
     const [arrMessage, setArrMessage] = useState<Message[]>([]);
-    const {conversation} = useContext(ConversationContext);
-
+    const {conversation,updateHightChatBox,linkContainerRef} = useContext(ConversationContext);
+    const chatBoxRef = useRef<HTMLDivElement>(null);
+    const socket = useContext(SocketContext)
     const {user} = useContext(AuthContext)
+   
 
     useEffect(()=>{
         if(conversation != undefined){  
             getMessagefollowCon(conversation?.id).then(({data})=>{
                 setArrMessage(data);
+            });
+        }
+        return()=>{
+            socket.on("onMessage", data=>{
+                setArrMessage((prev)=>[...prev, {content: data.content, id: data.id, author: data.author, createdAt: data.createdAt}]);
             })
         }
 
-    },[conversation])
+    },[conversation]);
+    
   return (
-    <div className="w-[100%] chat_container">
+    <div className="w-[100%] chat_container" ref={chatBoxRef}>
         {
            arrMessage.map((item, index)=>(
             <div key={index} className={item.author.id === user?.id ? "flex-row-reverse flex-end mt-[10px] ml-[10px]":"flex flex-end mt-[10px] ml-[10px] "} >

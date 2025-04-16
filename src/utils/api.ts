@@ -1,5 +1,5 @@
 import axios, {AxiosRequestConfig} from 'axios';
-import { CreateUserParams, ListConversations, Message, User, UserCredentialParam } from './types';
+import { CreateMessageParam, CreateUserParams, ListConversations, Message, User, UserCredentialParam } from './types';
 
 const API_URL  = import.meta.env.VITE_API_URL;
 const config: AxiosRequestConfig = { withCredentials: true };
@@ -23,4 +23,8 @@ export const getConversations=(id: number)=>{
 
 export const getMessagefollowCon=(id: number)=>{
    return axios.get<Message[]>(`${API_URL}/messages/${id}`, config);
+}
+
+export const createMessage=(data:CreateMessageParam)=>{
+   return axios.post(`${API_URL}/messages`, data,config);
 }

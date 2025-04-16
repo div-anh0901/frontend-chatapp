@@ -36,3 +36,8 @@ export type Message = {
     createdAt: string;
     author: User;
 }
+
+export type CreateMessageParam = {
+    content: string;
+    conversationId: number;
+}

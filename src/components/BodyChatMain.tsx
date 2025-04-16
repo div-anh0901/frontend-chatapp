@@ -17,6 +17,8 @@ import { IoSend } from "react-icons/io5";
 import ChatContainer from "./ChatContainer";
 import { useContext, useEffect, useState } from "react";
 import { ConversationContext } from "../utils/context/ConversationContext";
+import { toast } from "react-toastify/unstyled";
+import { createMessage } from "../utils/api";
 type Props={
     isOpen: boolean,
     boxRef: React.RefObject<HTMLDivElement>,
@@ -25,11 +27,12 @@ type Props={
 
 
 function BodyChatMain({isOpen,boxRef,clickToggleNav_v1}:Props) {
+    const [message,setMessage] = useState<string>("")
 
     const [conDefaut, setConDefaut] = useState({
         "createdAt": "2025-04-13T19:53:59.640Z",
         "creator": {id: 4, email: 'today2@gmail.com', username: 'today2 123123123'},
-        "id": 9,
+        "id": 1011,
         "recipient": {id: 1, email: 'john@gmail.com', username: 'john Morgan 1231312'}
     })
     const { conversation ,updateConversations} = useContext(ConversationContext);
@@ -38,7 +41,40 @@ function BodyChatMain({isOpen,boxRef,clickToggleNav_v1}:Props) {
         if(conversation == undefined){
             updateConversations(conDefaut)
         }
-    },[])
+    },[]);
+
+  function onclickSendMessage (){
+        try {
+            if(conversation != undefined && conversation.id !== 1011 ){
+                if(message !== ""){
+                    console.log(message)
+                    createMessage({content: message, conversationId: conversation.id}).then(({data})=>{
+                        console.log(data);
+                        setMessage("")
+                    }).catch((err)=>{
+                        console.log(err)
+                    })
+                }else {
+                    toast.error("Required enter message", {
+                        position: "top-center"
+                    })
+                }
+                
+            }else {
+                toast.error("Send message fail", {
+                    position: "top-center"
+                  })
+            }
+        } catch (error) {
+              toast.error("Send message fail", {
+                    position: "top-center"
+                })
+        }
+
+
+  }
+
+
   return (
     <div ref={boxRef} id="chatMain" className={isOpen ? "w-conversation_500 body_chat h-[100vh] relative z-1 all-transition": "w-conversation_400 body_chat h-[100vh] relative z-1 all-transition"}>
         <div className="w-[100%]">
@@ -106,14 +142,17 @@ function BodyChatMain({isOpen,boxRef,clickToggleNav_v1}:Props) {
                             </div>
                             
                             <div className="w-[65%]">
-                                <input className="w-[100%] outline-none p-[10px]" placeholder="Write your message..."  type="text" />
+                                <input onChange={(e)=> setMessage(e.target.value)} name="message" className="w-[100%] outline-none p-[10px]" placeholder="Write your message..."  type="text" />
                             </div>
 
                             <div className="d-flex-center ml-[20px]">
-                                <div className="w-[42px] mr-[15px] h-[42px] rounded-[50%] d-flex-center bg-[#e3f7f3] text-[20px] text-[#01aa85] bg-[">
+                                <div className="w-[42px] mr-[15px] h-[42px] rounded-[50%] d-flex-center bg-[#e3f7f3] text-[20px] text-[#01aa85]">
                                     <FaMicrophone/>
                                 </div>
-                                <div className="w-[42px] mr-[15px] h-[42px] rounded-[50%] d-flex-center bg-[#01aa85] text-[20px] text-white bg-[">
+                                <div 
+                                    onClick={onclickSendMessage}
+                                    className="w-[42px] mr-[15px] h-[42px] rounded-[50%] d-flex-center bg-[#01aa85] text-[20px] text-white"
+                                >
                                     <IoSend/>
                                 </div>
                             </div>

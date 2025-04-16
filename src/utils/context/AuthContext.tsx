@@ -7,7 +7,7 @@ type AuthContextType ={
     updateUser: (data : User) => void;
 }
 
-export const AuthContext  = createContext<AuthContextType>({
+export const AuthContext = createContext<AuthContextType>({
     updateUser:()=>{}
 });
 

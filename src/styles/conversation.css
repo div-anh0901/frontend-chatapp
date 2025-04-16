@@ -91,5 +91,5 @@ width: 100px; /* adjust as needed */
 
 .chat_container{
     height: calc(100vh - 200px);
-    overflow-x: auto;
+    overflow-y: auto;
 }
