@@ -15,10 +15,11 @@ import { FaMicrophone } from "react-icons/fa";
 import { FaChevronLeft } from "react-icons/fa6";
 import { IoSend } from "react-icons/io5";
 import ChatContainer from "./ChatContainer";
-import { useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { ConversationContext } from "../utils/context/ConversationContext";
 import { toast } from "react-toastify/unstyled";
 import { createMessage } from "../utils/api";
+import { MessageContext } from "../utils/context/MessageContext";
 type Props={
     isOpen: boolean,
     boxRef: React.RefObject<HTMLDivElement>,
@@ -27,7 +28,8 @@ type Props={
 
 
 function BodyChatMain({isOpen,boxRef,clickToggleNav_v1}:Props) {
-    const [message,setMessage] = useState<string>("")
+    const [messageText,setMessageText] = useState<string>("");
+    const { updateMessage} = useContext(MessageContext)
 
     const [conDefaut, setConDefaut] = useState({
         "createdAt": "2025-04-13T19:53:59.640Z",
@@ -36,21 +38,12 @@ function BodyChatMain({isOpen,boxRef,clickToggleNav_v1}:Props) {
         "recipient": {id: 1, email: 'john@gmail.com', username: 'john Morgan 1231312'}
     })
     const { conversation ,updateConversations} = useContext(ConversationContext);
-    
-    useEffect(()=>{
-        if(conversation == undefined){
-            updateConversations(conDefaut)
-        }
-    },[]);
-
-  function onclickSendMessage (){
+    function onclickSendMessage (){
         try {
             if(conversation != undefined && conversation.id !== 1011 ){
-                if(message !== ""){
-                    console.log(message)
-                    createMessage({content: message, conversationId: conversation.id}).then(({data})=>{
-                        console.log(data);
-                        setMessage("")
+                if(messageText !== ""){
+                    createMessage({content: messageText, conversationId: conversation.id}).then(({data})=>{
+                        setMessageText("")
                     }).catch((err)=>{
                         console.log(err)
                     })
@@ -142,7 +135,7 @@ function BodyChatMain({isOpen,boxRef,clickToggleNav_v1}:Props) {
                             </div>
                             
                             <div className="w-[65%]">
-                                <input onChange={(e)=> setMessage(e.target.value)} name="message" className="w-[100%] outline-none p-[10px]" placeholder="Write your message..."  type="text" />
+                                <input onChange={(e)=> setMessageText(e.target.value)} name="message" className="w-[100%] outline-none p-[10px]" placeholder="Write your message..."  type="text" />
                             </div>
 
                             <div className="d-flex-center ml-[20px]">

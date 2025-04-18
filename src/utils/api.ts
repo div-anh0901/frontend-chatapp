@@ -17,7 +17,7 @@ export const getAuthUser = ()=>{
 }
 
 
-export const getConversations=(id: number)=>{
+export const getConversations=()=>{
    return axios.get<ListConversations[]>(`${API_URL}/conversations`, config);
 }
 

@@ -9,6 +9,8 @@ import { Conversations, ListConversations } from '../utils/types';
 import { getConversations } from '../utils/api';
 import { toast } from 'react-toastify';
 import { ConversationContext } from '../utils/context/ConversationContext';
+import { useSelector } from 'react-redux';
+import { RootState } from '../utils/store';
 type Props ={
     clickToggleNavMain : ()=>void,
     boxRef: React.RefObject<HTMLDivElement>,
@@ -18,26 +20,12 @@ type Props ={
 
 function NavbarListConversation({clickToggleNavMain,boxRef,clickToggleNav_v2}:Props) {
     const [arrayConversation, setArrayConversation] = useState<ListConversations[]>([]);
-    const { conversation, updateConversations } = useContext(ConversationContext);
     const {user} = useContext(AuthContext);
-
-
-   useEffect(()=>{
-        if(user !== undefined){
-            getConversations(user.id)
-            .then(({data})=>{
-                setArrayConversation(data);
-            })
-            .catch((err) => console.log(err));
-        }else {
-            toast.error(
-                "Doesn't infomation user", 
-                {
-                    position: "top-center"
-                });      
-        }
-    },[]);
-
+    const {updateConversations} = useContext(ConversationContext);
+    const controller = new AbortController();
+    const conversations = useSelector(
+        (state: RootState) => state.conversation.conversations
+      );
 
     function handClickCon (data: Conversations){
         updateConversations(data)
@@ -72,7 +60,7 @@ function NavbarListConversation({clickToggleNavMain,boxRef,clickToggleNav_v2}:Pr
                 </div>
                 <ul className="w-[100%] d-flex-center-space-between slide-scroll pl-[20px] pt-[20px]">
                     {
-                        arrayConversation.map((data,index)=>(
+                        conversations.map((data,index)=>(
                             <li key={index} className="mr-[10px]"> 
                                 <div className="h-[70px] w-[70px]  d-flex-center rounded-[50%] border-2 border-[#01aa85]">
                                     <img src={avatar} className="h-[60px] w-[60x] rounded-[50%]" alt="" />
@@ -97,7 +85,7 @@ function NavbarListConversation({clickToggleNavMain,boxRef,clickToggleNav_v2}:Pr
                 <div className="w-[100%]">
                     <ul className="w-[100%] conversations">
                         {
-                            arrayConversation.map((data,index)=>(
+                            conversations.map((data,index)=>(
                                 <li key={index} onClick={()=>handClickCon(data)} className="w-[100%] h-[100px] border-b-1 border-b-[#7f838433] conversation-item  d-flex-center-space-between pl-[20px] pr-[20px]" >
                                     <div className="d-flex-center">
                                         <img className="h-[50px] w-[50x] rounded-[50%]" src={avatar} alt="" />

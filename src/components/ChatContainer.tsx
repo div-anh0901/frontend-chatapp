@@ -5,32 +5,37 @@ import { ConversationContext } from '../utils/context/ConversationContext';
 import { getMessagefollowCon } from '../utils/api';
 import { AuthContext } from '../utils/context/AuthContext';
 import { SocketContext } from '../utils/context/SocketContext';
+import {fetchMesagesThunk} from '../utils/store/MessageSlice'
+import { AppDispatch, RootState } from '../utils/store';
+import { useDispatch, useSelector } from 'react-redux';
 function ChatContainer() {
     const [arrMessage, setArrMessage] = useState<Message[]>([]);
     const {conversation,updateHightChatBox,linkContainerRef} = useContext(ConversationContext);
     const chatBoxRef = useRef<HTMLDivElement>(null);
     const socket = useContext(SocketContext)
     const {user} = useContext(AuthContext)
+    const dispatch = useDispatch<AppDispatch>();
+    const messages = useSelector(
+        (state: RootState) => state.message.messages
+      );
+
    
 
     useEffect(()=>{
-        if(conversation != undefined){  
-            getMessagefollowCon(conversation?.id).then(({data})=>{
-                setArrMessage(data);
-            });
-        }
-        return()=>{
-            socket.on("onMessage", data=>{
-                setArrMessage((prev)=>[...prev, {content: data.content, id: data.id, author: data.author, createdAt: data.createdAt}]);
-            })
-        }
-
+            if(conversation != undefined){
+                dispatch(fetchMesagesThunk(conversation.id));
+            }
+           /*  return()=>{
+               socket.on("onMessage", data=>{
+                    setArrMessage((prev)=>[...prev, {content: data.content, id: data.id, author: data.author, createdAt: data.createdAt}]);
+                    setDataLoaded(true)
+                })
+            }*/
     },[conversation]);
-    
   return (
     <div className="w-[100%] chat_container" ref={chatBoxRef}>
         {
-           arrMessage.map((item, index)=>(
+           messages.map((item, index)=>(
             <div key={index} className={item.author.id === user?.id ? "flex-row-reverse flex-end mt-[10px] ml-[10px]":"flex flex-end mt-[10px] ml-[10px] "} >
                 <div className="relative w-[55px] h-[55px]">
                     <img className="w-[55px] h-[55px] rounded-[50%]" src={user1} alt="" />
