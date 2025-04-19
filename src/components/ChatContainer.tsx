@@ -5,12 +5,11 @@ import { ConversationContext } from '../utils/context/ConversationContext';
 import { getMessagefollowCon } from '../utils/api';
 import { AuthContext } from '../utils/context/AuthContext';
 import { SocketContext } from '../utils/context/SocketContext';
-import {fetchMesagesThunk} from '../utils/store/MessageSlice'
+import {addMessage, fetchMesagesThunk} from '../utils/store/MessageSlice'
 import { AppDispatch, RootState } from '../utils/store';
 import { useDispatch, useSelector } from 'react-redux';
 function ChatContainer() {
-    const [arrMessage, setArrMessage] = useState<Message[]>([]);
-    const {conversation,updateHightChatBox,linkContainerRef} = useContext(ConversationContext);
+    const {conversation} = useContext(ConversationContext);
     const chatBoxRef = useRef<HTMLDivElement>(null);
     const socket = useContext(SocketContext)
     const {user} = useContext(AuthContext)
@@ -25,12 +24,11 @@ function ChatContainer() {
             if(conversation != undefined){
                 dispatch(fetchMesagesThunk(conversation.id));
             }
-           /*  return()=>{
+             return()=>{
                socket.on("onMessage", data=>{
-                    setArrMessage((prev)=>[...prev, {content: data.content, id: data.id, author: data.author, createdAt: data.createdAt}]);
-                    setDataLoaded(true)
+                    dispatch(addMessage({content: data.content, id: data.id, author: data.author, createdAt: data.createdAt}))
                 })
-            }*/
+            }
     },[conversation]);
   return (
     <div className="w-[100%] chat_container" ref={chatBoxRef}>

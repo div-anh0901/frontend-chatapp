@@ -24,14 +24,13 @@ import { getConversations, getMessagefollowCon } from '../api';
    initialState,
    reducers: {
      addMessage: (state, action: PayloadAction<Message>) => {
-      
-       //state.conversations.push(action.payload);
+       state.messages.push(action.payload);
      },
     
    },
    extraReducers: (builder) => {
     builder.addCase(fetchMesagesThunk.fulfilled, (state, action) => {
-        console.log(action.payload.data)
+      state.messages = []
       action.payload.data.forEach((message) => {
         state.messages.push(message)
       });

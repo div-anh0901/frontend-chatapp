@@ -15,7 +15,7 @@ import { FaMicrophone } from "react-icons/fa";
 import { FaChevronLeft } from "react-icons/fa6";
 import { IoSend } from "react-icons/io5";
 import ChatContainer from "./ChatContainer";
-import { createContext, useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { ConversationContext } from "../utils/context/ConversationContext";
 import { toast } from "react-toastify/unstyled";
 import { createMessage } from "../utils/api";
@@ -29,7 +29,8 @@ type Props={
 
 function BodyChatMain({isOpen,boxRef,clickToggleNav_v1}:Props) {
     const [messageText,setMessageText] = useState<string>("");
-    const { updateMessage} = useContext(MessageContext)
+    const { updateMessage} = useContext(MessageContext);
+
 
     const [conDefaut, setConDefaut] = useState({
         "createdAt": "2025-04-13T19:53:59.640Z",
@@ -37,7 +38,7 @@ function BodyChatMain({isOpen,boxRef,clickToggleNav_v1}:Props) {
         "id": 1011,
         "recipient": {id: 1, email: 'john@gmail.com', username: 'john Morgan 1231312'}
     })
-    const { conversation ,updateConversations} = useContext(ConversationContext);
+    const { conversation} = useContext(ConversationContext);
     function onclickSendMessage (){
         try {
             if(conversation != undefined && conversation.id !== 1011 ){
@@ -135,7 +136,7 @@ function BodyChatMain({isOpen,boxRef,clickToggleNav_v1}:Props) {
                             </div>
                             
                             <div className="w-[65%]">
-                                <input onChange={(e)=> setMessageText(e.target.value)} name="message" className="w-[100%] outline-none p-[10px]" placeholder="Write your message..."  type="text" />
+                                <input onChange={(e)=> setMessageText(e.target.value)} name="message" value={messageText} className="w-[100%] outline-none p-[10px]" placeholder="Write your message..."  type="text" />
                             </div>
 
                             <div className="d-flex-center ml-[20px]">
